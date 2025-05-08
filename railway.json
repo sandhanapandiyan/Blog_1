@@ -14,7 +14,7 @@
           }
         },
         "start": {
-          "cmd": "gunicorn blog_project.wsgi:application"
+          "cmd": "gunicorn blog_project.wsgi.application"
         }
       }
     }
