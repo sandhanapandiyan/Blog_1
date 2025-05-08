@@ -1,0 +1,87 @@
+/* Fade-in animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Slide-up animations */
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card hover effects */
+.card-hover-animate {
+    transition: all 0.3s ease;
+}
+.card-hover-animate:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Button pulse effect */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+.btn-pulse {
+    transition: all 0.3s ease;
+}
+.btn-pulse:hover {
+    animation: pulse 1.5s infinite;
+}
+
+/* Navbar item animation */
+.nav-item-animate {
+    position: relative;
+}
+.nav-item-animate::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+}
+.nav-item-animate:hover::after {
+    width: 100%;
+}
+
+/* Loading spinner */
+.spinner {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form input focus animation */
+.form-control-animate {
+    transition: all 0.3s ease;
+}
+.form-control-animate:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Scroll animation class */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.scroll-animate.animate__animated.animate__fadeInUp {
+    opacity: 1;
+    transform: translateY(0);
+}

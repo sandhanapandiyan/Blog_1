@@ -1,0 +1,74 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Post{% endblock %}
+
+{% block content %}
+<div class="card animate__animated animate__fadeIn">
+    <div class="card-header">
+        <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Post</h2>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.getElementById('id_image');
+    if (imageInput) {
+        imageInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = document.createElement('img');
+                    img.id = 'image-preview';
+                    img.src = event.target.result;
+                    img.style.maxWidth = '100%';
+                    
+                    const previewContainer = document.getElementById('image-preview-container');
+                    previewContainer.innerHTML = '';
+                    previewContainer.appendChild(img);
+                    
+                    // Initialize cropper
+                    const cropper = new Cropper(img, {
+                        aspectRatio: 16 / 9,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                    });
+                    
+                    // Update form before submit
+                    const form = document.querySelector('form');
+                    form.addEventListener('submit', function() {
+                        cropper.getCroppedCanvas().toBlob(function(blob) {
+                            const file = new File([blob], e.target.files[0].name, {
+                                type: 'image/jpeg',
+                                lastModified: Date.now()
+                            });
+                            
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            imageInput.files = dataTransfer.files;
+                        }, 'image/jpeg', 0.8);
+                    });
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
